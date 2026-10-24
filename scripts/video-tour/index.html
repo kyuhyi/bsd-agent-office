@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>BSD 가상 오피스 · 2분 기능 투어</title>
+<!-- Bang Motion v1.19.0의 카메라 리그·단일 타임라인·clip 동기화 구조를 적용. MIT © 2026 Bang Tutorial. https://github.com/bangtutorial/bang-motion -->
+<style>
+@font-face{font-family:Pretendard;src:url(PretendardVariable.woff2) format('woff2');font-weight:100 900}
+*{box-sizing:border-box}html,body{margin:0;height:100%;overflow:hidden;background:#101a28;color:#fff;font-family:Pretendard,sans-serif}
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;overflow:hidden;background:#172337}
+#world{position:absolute;inset:0;transform-origin:0 0}video{width:1920px;height:1080px;object-fit:cover}
+#shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(8,14,23,.28),transparent 19%,transparent 77%,rgba(6,12,22,.92))}
+#chapter{position:absolute;left:48px;top:64px;display:flex;gap:18px;align-items:center;font-size:27px;font-weight:700;letter-spacing:.01em;padding:14px 22px;border:1px solid #ffffff26;background:#152235e8;border-radius:12px;box-shadow:0 8px 28px #0003}
+#dot{width:8px;height:8px;background:#ec413b;border-radius:50%}
+#caption{position:absolute;bottom:65px;left:120px;right:120px;text-align:center;font-size:43px;font-weight:650;line-height:1.4;letter-spacing:-.025em;text-shadow:0 2px 12px #000}
+#progress{position:absolute;bottom:0;height:5px;left:0;background:#d7bc87;transform-origin:0 50%;width:100%}
+#debug{display:none;position:fixed;bottom:8px;left:50%;transform:translateX(-50%);background:#000c;padding:8px;border-radius:8px;z-index:5}#debug input{width:500px}
+</style></head><body>
+<div id="stage"><div id="world"><video id="footage" src="footage.mp4" muted playsinline preload="auto"></video></div><div id="shade"></div><div id="chapter"><i id="dot"></i><span id="chapterText"></span></div><div id="caption"></div><div id="progress"></div></div>
+<div id="debug"><button id="play">재생 / 일시정지</button><input id="scrub" type="range" min="0" max="120" step=".033"><span id="time"></span></div>
+<script src="gsap.min.js"></script><script>
+const SEG=/* TIMELINE_DATA */;
+const W=1920,H=1080,DUR=120,$=s=>document.querySelector(s),v=$('#footage');
+function fit(){$('#stage').style.transform=`translate(-50%,-50%) scale(${Math.min(innerWidth/W,innerHeight/H)})`;}addEventListener('resize',fit);fit();
+const C={x:960,y:540,z:1},tl=gsap.timeline({paused:true});
+function applyCam(){$('#world').style.transform=`translate(${960-C.x*C.z}px,${540-C.y*C.z}px) scale(${C.z})`;}
+// 실제 화면의 범위를 벗어나지 않도록 카메라를 제한한다.
+function focus(x,y,z){return {x:Math.max(960/z,Math.min(1920-960/z,x)),y:Math.max(540/z,Math.min(1080-540/z,y)),z};}
+for(const s of SEG){const c=focus(...s.camera);tl.to(C,{...c,duration:Math.min(.8,s.duration*.2),ease:'power2.inOut',onUpdate:applyCam},s.start);}
+tl.to({}, {duration:.001},DUR-.001);
+function render(){const t=tl.time();const s=SEG.find(s=>t>=s.start&&t<s.start+s.duration)||SEG.at(-1);$('#chapterText').textContent=s.title;$('#caption').textContent=s.caption;const leftPanel=['chat-wide','question-wide','task-wide'].includes(s.name);$('#chapter').style.left=leftPanel?'750px':'48px';Object.assign($('#caption').style,leftPanel?{top:'175px',bottom:'auto',left:'750px',right:'85px',textAlign:'left',background:'#152235ee',padding:'24px 30px',borderRadius:'16px'}:{top:'auto',bottom:'65px',left:'120px',right:'120px',textAlign:'center',background:'transparent',padding:'0',borderRadius:'0'});$('#progress').style.transform=`scaleX(${t/DUR})`;$('#scrub').value=t;$('#time').textContent=t.toFixed(1)+' / 120';applyCam();}
+// Bang Motion clip 레이어: 재생과 프레임 출력이 같은 시간축을 공유한다.
+const CLIPS=[];
+function clip(el,o={}){el.muted=true;el.playsInline=true;el.pause();const c={el,at:o.at||0,inT:o.in||0,out:o.out??DUR,rate:o.rate||1};CLIPS.push(c);return c;}
+clip(v,{at:0,in:0,out:DUR});
+function syncClips(t,playing){for(const c of CLIPS){const time=Math.max(0,Math.min(c.out-.001,c.inT+(t-c.at)*c.rate));if(playing){if(Math.abs(c.el.currentTime-time)>.15)c.el.currentTime=time;if(c.el.paused)c.el.play().catch(()=>{});}else if(!c.el.paused)c.el.pause();}}
+async function seekClips(t){await Promise.all(CLIPS.map(c=>new Promise(resolve=>{const time=Math.max(0,Math.min(c.out-.001,t));c.el.pause();if(Math.abs(c.el.currentTime-time)<1/240&&c.el.readyState>=2)return resolve();const timeout=setTimeout(()=>{throw new Error('영상 프레임 탐색 시간 초과');},10000);c.el.addEventListener('seeked',()=>{clearTimeout(timeout);resolve();},{once:true});c.el.currentTime=time;})));}
+function start(){tl.play(0);v.currentTime=0;v.play().catch(()=>{});}tl.eventCallback('onComplete',start);
+gsap.ticker.add(()=>{render();syncClips(tl.time(),!tl.paused());});
+window.OPENER={W,H,DURATION:DUR,tl,ready:false,clipsReady:()=>v.readyState>=2,seek(t){tl.pause(t,false);render();},async seekFrame(t){this.seek(t);await seekClips(t);},play:start};
+const q=new URLSearchParams(location.search);if(q.has('debug'))$('#debug').style.display='block';$('#scrub').oninput=e=>OPENER.seekFrame(+e.target.value);$('#play').onclick=()=>tl.paused()?tl.play():tl.pause();
+addEventListener('keydown',e=>{if(/^[rR]$/.test(e.key))start();if(e.code==='Space'){e.preventDefault();tl.paused()?tl.play():tl.pause();}});
+Promise.all([document.fonts.ready,new Promise(r=>v.readyState>=2?r():v.addEventListener('loadeddata',r,{once:true}))]).then(()=>{OPENER.ready=true;render();if(!q.has('clean'))start();});
+</script></body></html>

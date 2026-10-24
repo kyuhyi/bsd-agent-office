@@ -1,0 +1,17 @@
+node_modules/
+.next/
+dist/
+build/
+coverage/
+.git/
+.env
+.env.*
+!.env.example
+*.log
+*.sqlite
+*.sqlite-*
+research/*.png
+research/browser-*.mjs
+artifacts/
+test-results/
+playwright-report/

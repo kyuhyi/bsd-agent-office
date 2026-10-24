@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+const base='http://127.0.0.1:43140';
+const initial=await fetch(base+'/office-api/session').then(r=>r.json());
+const headers={'x-office-token':initial.token,'Content-Type':'application/json'};
+assert.equal((await fetch(base+'/office-api/tasks',{method:'POST',headers:{...headers,Origin:'https://example.org'},body:'{}'})).status,403);
+assert.equal((await fetch(base+'/office-api/tasks',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'})).status,403);
+assert.equal((await fetch(base+'/office-api/tasks',{method:'POST',headers,body:JSON.stringify({prompt:'검증',provider:'invalid',mode:'analyze',roleId:'eden'})})).status,400);
+const htmlTask=initial.tasks.find(t=>t.files?.includes('index.html'));
+assert.ok(htmlTask,'실제 생성 파일이 있어야 합니다.');
+const artifact=await fetch(base+`/office-api/artifact?task=${htmlTask.id}&file=index.html`,{headers});
+assert.equal(artifact.status,200);assert.match(await artifact.text(),/BSD/);
+assert.equal((await fetch(base+`/office-api/artifact?task=${htmlTask.id}&file=..%2F..%2F.env`,{headers})).status,400);
+const persisted=await fetch(base+'/office-api/state',{headers}).then(r=>r.json());
+assert.ok(persisted.tasks.some(t=>t.provider==='claude'&&t.result));
+assert.ok(persisted.tasks.some(t=>t.provider==='codex'&&t.files.length));
+console.log(JSON.stringify({checks:7,passed:true,tasks:persisted.tasks.map(({id,provider,status,files})=>({id,provider,status,files}))},null,2));

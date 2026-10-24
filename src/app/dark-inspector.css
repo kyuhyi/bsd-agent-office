@@ -1,0 +1,22 @@
+/* 사무실과 같은 실제 캐릭터를 사용하는 차콜 패널. */
+.inspector{background:linear-gradient(155deg,#202732,#121820 75%);color:#e7eaf0;border:1px solid #ffffff16;box-shadow:0 20px 70px #0007;border-radius:18px;overflow:hidden;width:340px;backdrop-filter:blur(24px)}
+.inspector-tabs{border-bottom:1px solid #ffffff12;background:#171e27;flex-shrink:0;height:53px;padding:0 22px;gap:25px}
+.inspector-tabs button{color:#8591a2}.inspector-tabs button.active{color:#e6d0ad;border-bottom-color:#c6ab83}.inspector-tabs button span{color:#8591a2}
+.inspector-content{padding:18px 16px;scrollbar-color:#3d4858 transparent}
+.section-title h2{color:#b6c1cf;font-size:11px;letter-spacing:.3px}.section-title{margin-bottom:14px}.tiny-dot{background:#bca681}
+.team-list{display:flex;flex-direction:column;gap:6px}.team-row{min-height:66px;padding:6px 9px;gap:11px;border:1px solid transparent;border-radius:12px;color:#edf0f5;background:transparent;position:relative}
+.team-row:hover{background:#ffffff06}.team-row.selected{background:linear-gradient(110deg,#344154b3,#25303b70);border-color:#a1b0c32e;box-shadow:inset 2px 0 #c5ab83}
+.team-row strong{color:#f0f2f7;font-size:12px}.team-row strong small{color:#92a2b7;background:#ffffff07;border:1px solid #ffffff0c;font-size:7px;border-radius:4px;padding:2px 4px}
+.team-row>div>span{color:#9eabba;font-size:10px}.staff-status{color:#82978e;font-size:9px}.staff-status.working{color:#ebc389}
+.character-portrait{display:block;position:relative;width:54px;height:56px;flex:0 0 54px;border-radius:11px;background:radial-gradient(ellipse at 50% 85%,#53627340,#1b243140 70%);overflow:hidden}
+.portrait-large{width:100%;height:190px;flex:none;border-radius:13px;background:radial-gradient(ellipse at 50% 70%,#48576a55,#161e2a00 72%)}
+.portrait-renderer{position:absolute;top:54px;bottom:64px;left:0;right:0;z-index:10;pointer-events:none;overflow:hidden}.portrait-renderer>div,.portrait-renderer canvas{pointer-events:none!important}
+.person-detail{background:linear-gradient(145deg,#252f3c,#1a212b);border:1px solid #ffffff12;border-radius:15px;padding:17px;margin-top:20px;box-shadow:0 8px 26px #0002}
+.person-detail-top{position:relative;display:block;float:none;width:100%;margin:-10px 0 8px}.profile-index{position:absolute;right:0;top:10px;color:#708096;font-size:8px;letter-spacing:1.2px}
+.profile-role{color:#c8b593!important;font-size:10px;margin-top:4px}.person-detail h3{color:#f1f3f7;font-size:25px}.person-detail h3>span{color:#a2afc1;font-size:11px;line-height:1.7}.person-detail p{color:#9caabd;font-size:11px;line-height:1.9}
+.profile-stats{border-top-color:#ffffff12;color:#8999ae}.profile-stats b{color:#e5d1af}.inspector .outline-btn{border-color:#bb9d6c50;background:#ba9e6b0a;color:#dfc9a6;border-radius:9px}.inspector .outline-btn:hover{background:#ba9e6b17}
+.subtle-note{color:#718298;font-size:9px}.project-footer{background:#141b24;border-top:1px solid #ffffff12;color:#aebdd0;padding:13px 19px;flex-shrink:0}.project-footer small{color:#728198}.project-footer b{color:#c2ccda}.folder-icon{background:#283445;color:#b7c9dc}
+.inspector .task-card{background:#1e2835;border-color:#ffffff15;color:#d6deea}.inspector .task-card h3,.inspector .empty-state h3{color:#d8e2ef}.inspector .task-card p,.inspector .empty-state p{color:#94a3b7}.inspector .filter-row button{color:#9dacc0}.inspector .filter-row button.active{background:#344357;color:#e8d4b6}
+.breadcrumb>span:first-child{font-family:inherit!important;font-size:10px!important;letter-spacing:1.6px!important;color:#d2dae7}.breadcrumb>b{color:#8795a8}
+.breadcrumb .header-brand{position:relative;display:block;width:139px;height:28px;flex-shrink:0}.breadcrumb .header-brand img.header-brand-full{display:block;width:139px;height:28px;object-fit:contain;filter:brightness(0) invert(1)}.breadcrumb .header-brand img.header-brand-symbol{position:absolute;left:0;top:0;width:33.6px;height:28px;object-fit:contain}
+@media(max-width:760px){.inspector{width:auto}.team-row{min-height:66px}.team-row strong{font-size:12px}.team-row>div>span{font-size:10px}.person-detail-top{width:100%;float:none}.portrait-large{height:180px}.character-portrait:not(.portrait-large){width:54px;height:56px}}

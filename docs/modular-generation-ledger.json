@@ -1,0 +1,57 @@
+{
+  "approvedTotal": 204,
+  "furnitureAndStaffCeiling": 174,
+  "kyuRigCeiling": 30,
+  "generationCost": 162,
+  "riggingCost": 5,
+  "verifiedBalance": 37.57,
+  "unattributedBalanceDifference": 0.18,
+  "jobs": [
+    {
+      "name": "work-desk",
+      "cost": 18,
+      "path": "public/models/modular-v2/work-desk.glb"
+    },
+    {
+      "name": "leather-sofa",
+      "cost": 18,
+      "path": "public/models/modular-v2/leather-sofa.glb"
+    },
+    {
+      "name": "schefflera",
+      "cost": 18,
+      "path": "public/models/modular-v2/schefflera.glb"
+    },
+    {
+      "name": "meeting-table",
+      "cost": 18,
+      "path": "public/models/modular-v2/meeting-table.glb"
+    },
+    {
+      "name": "meeting-chair",
+      "cost": 18,
+      "path": "public/models/modular-v2/meeting-chair.glb"
+    },
+    {
+      "name": "executive-desk",
+      "cost": 18,
+      "path": "public/models/modular-v2/executive-desk.glb"
+    },
+    {
+      "name": "executive-chair",
+      "cost": 18,
+      "path": "public/models/modular-v2/executive-chair.glb"
+    },
+    {
+      "name": "staff-male",
+      "cost": 18,
+      "path": "public/models/modular-v2/staff-male.glb"
+    },
+    {
+      "name": "staff-female",
+      "cost": 18,
+      "path": "public/models/modular-v2/staff-female.glb"
+    }
+  ],
+  "sourceNote": "Generated with Higgsfield; private account download addresses omitted. Models are included locally."
+}

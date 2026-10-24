@@ -1,0 +1,21 @@
+node_modules/
+.next/
+dist/
+.office/
+.env*
+*.tsbuildinfo
+output/
+.playwright-cli/
+.agents/
+tools/
+*.log
+*.zip
+research/browser-*.mjs
+research/implementation-browser-*.mjs
+__pycache__/
+*.pyc
+# 공개 배포에서 제외한 원본 참고 캡처는 로컬에 보존한다.
+research/reference-5s.png
+research/reference-15s.png
+research/reference-25s.png
+research/threads-reference.png
